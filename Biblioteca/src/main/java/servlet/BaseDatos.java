@@ -82,4 +82,34 @@ public class BaseDatos {
 			e.printStackTrace();
 		}
 	}
+
+	public Libro obtenerLibro(int id) {
+		Libro l = null;
+		try {
+			String sql = "select * from libros where id=" + id;
+			Statement s = this.conexion.createStatement();
+			ResultSet rs = s.executeQuery(sql);
+			rs.next();
+			l = new Libro(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return l;
+	}
+
+	public void actualizaLibro(Libro l) {
+		try {
+			String sql = "update libros set titulo=?, autor=?," + "editorial=?, fecha=?, categoria=?,novedad=?";
+			PreparedStatement s = this.conexion.prepareStatement(sql);
+			s.setString(1,l.getTitulo());
+			s.setString(2,l.getAutor());
+			s.setString(3,l.getEditorial());
+			s.setString(4,l.getFecha());
+			s.setString(5,l.getCategoria());
+			s.setInt(6,l.getNovedad());
+			s.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

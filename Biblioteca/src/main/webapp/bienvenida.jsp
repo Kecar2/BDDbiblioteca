@@ -13,18 +13,18 @@ table {
 }
 
 td, th {
-	border: 1px solid #dddddd;
+	border: 1px solid #778899;
 	text-align: left;
 	padding: 8px;
 }
 
 tr:nth-child(even) {
-	background-color: #dddddd;
+	background-color: #FFFAF0;
 }
 
 input[type=submit] {
 	width: 100%;
-	background-color: #4CAF50;
+	background-color: #B8860B;
 	color: white;
 	padding: 14px 20px;
 	margin: 8px 0;
@@ -44,31 +44,20 @@ input[type=text], select {
 }
 
 input[type=submit]:hover {
-	background-color: #45a049;
+	background-color: #E9967A;
 }
 
 div {
 	border-radius: 5px;
-	background-color: #f2f2f2;
+	background-color: #F0FFF0;
 	padding: 20px;
+	margin-top: 15px;
 }
 </style>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
 <body>
-	<div>
-		<form action="./GestorInsertar" method="post">
-			<br> Id:<input type=text name="id"><br> <br>Titulo:<input
-				type=text name="titulo"><br> <br>Autor:<input
-				type=text name="autor"><br> <br>Editorial:<input
-				type=text name="editorial"><br> <br>Fecha:<input
-				type=text name="fecha"><br> <br>Categoria<input
-				type=text name="categoria"><br> <br> Novedad:<input
-				type=text name="novedad"><br> <br> <input
-				type=submit value="Insertar Libro"><br>
-		</form>
-	</div>
 	<h1>
 		<%
 		String nombre = request.getParameter("login");
@@ -86,6 +75,7 @@ div {
 			<th>Categoria</th>
 			<th>Novedad</th>
 			<th>Borrado</th>
+			<th>Actualizar</th>
 		</tr>
 		<%
 		ArrayList<Libro> lista = (ArrayList<Libro>) request.getAttribute("lista");
@@ -97,11 +87,43 @@ div {
 			out.print("<td>" + l.getFecha() + "</td>");
 			out.print("<td>" + l.getCategoria() + "</td>");
 			out.print("<td>" + l.getNovedad() + "</td>");
-			out.print("<td><a href=./GestorBorrado?id=" + l.getId() + ">Borrado</a></td></tr>");
+			out.print("<td><a href=./GestorBorrado?id=" + l.getId() + ">Borrado</a></td>");
+			out.print("<td><a href=./GestorActualizar?id=" + l.getId() + ">Actualizar</a></td></tr>");
+
 		}
 		%>
 	</table>
-
+	<%
+	Libro l = (Libro) request.getAttribute("libro");
+	if (l == null) {
+	%>
+	<div>
+	<form action="./GestorInsertar" method="post">
+		<br>Id:<input type=text name="id"> Titulo:<input
+			type=text name="titulo"> Autor:<input type=text name="autor">
+		Editorial:<input type=text name="editorial"><br> <br>
+		Fecha:<input type=text name="fecha"> Categoria<input type=text
+			name="categoria"> Novedad:<input type=text name="novedad">
+		<br> <br> <input type=submit value="Insertar Libro">
+	</form>
+	<%
+	} else {
+	%>
+	<form action="./GestorActualizar" method="post">
+		<br>Id:<input type=text name="id" value="<%=l.getId()%>">
+		Titulo:<input type=text name="titulo" value="<%=l.getTitulo()%>">
+		Autor:<input type=text name="autor" value="<%=l.getAutor()%>">
+		Editorial:<input type=text name="editorial"
+			value="<%=l.getEditorial()%>"><br> <br> Fecha:<input
+			type=text name="fecha" value="<%=l.getFecha()%>"> Categoria<input
+			type=text name="categoria" value="<%=l.getCategoria()%>">
+		Novedad:<input type=text name="novedad" value="<%=l.getNovedad()%>">
+		<br> <br> <input type=submit value="Actualizar Libro">
+	</form>
+	</div>
+	<%
+	}
+	%>
 
 </body>
 </html>
